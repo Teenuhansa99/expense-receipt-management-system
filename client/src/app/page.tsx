@@ -5,7 +5,8 @@ import { Layout } from '@/components/Layout';
 import { SummaryCards } from '@/components/SummaryCards';
 import { RecentExpensesTable } from '@/components/RecentExpensesTable';
 import { QuickActions } from '@/components/QuickActions';
-import { CategoryChart } from '@/components/SpendingCharts';
+import { CategoryChart, MonthlyChart } from '@/components/SpendingCharts';
+import { CreditCard, DollarSign, Calendar, Layers } from 'lucide-react';
 import { DeleteConfirmationModal } from '@/components/DeleteConfirmationModal';
 import { expenseApi } from '@/services/api';
 import { Expense, ExpenseSummary } from '@/types/expense';
@@ -74,6 +75,15 @@ export default function Dashboard() {
   const thisMonthAmount = currentMonthExpenses.reduce((sum, expense) => sum + expense.amount, 0);
   const receiptsCount = expenses.filter(expense => expense.receipt_url).length;
 
+  const monthlyData = Object.values(
+    expenses.reduce((acc, expense) => {
+      const month = new Date(expense.expense_date).toLocaleString('default', { month: 'short' });
+      if (!acc[month]) acc[month] = { month, total: 0 };
+      acc[month].total += expense.amount;
+      return acc;
+    }, {} as Record<string, { month: string; total: number }>)
+  );
+
   return (
     <Layout title="Dashboard" showAddButton>
       <div className="space-y-6">
@@ -83,6 +93,12 @@ export default function Dashboard() {
           thisMonthAmount={thisMonthAmount}
           totalCategories={categoryStats.length}
           receiptsCount={receiptsCount}
+          metrics={[
+            { title: 'Total Expenses', value: summary?.totalCount || 0, icon: <CreditCard className="h-5 w-5" />, color: 'blue' },
+            { title: 'Total Spending', value: `Rs. ${summary?.totalAmount?.toFixed(2) || '0.00'}`, icon: <DollarSign className="h-5 w-5" />, color: 'green' },
+            { title: 'This Month', value: `Rs. ${thisMonthAmount.toFixed(2)}`, icon: <Calendar className="h-5 w-5" />, color: 'orange' },
+            { title: 'Categories', value: categoryStats.length, icon: <Layers className="h-5 w-5" />, color: 'purple' },
+          ]}
         />
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -96,8 +112,10 @@ export default function Dashboard() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <CategoryChart data={categoryStats} />
-          <div className="rounded-lg bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-lg font-medium text-gray-900">Analytics Summary</h3>
+          <MonthlyChart data={monthlyData} />
+        </div>
+        <div className="rounded-lg bg-white p-6 shadow-sm">
+          <h3 className="mb-4 text-lg font-medium text-gray-900">Analytics Summary</h3>
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="text-gray-600">Highest Expense:</span>
