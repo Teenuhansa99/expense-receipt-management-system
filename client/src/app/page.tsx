@@ -114,35 +114,30 @@ export default function Dashboard() {
           <CategoryChart data={categoryStats} />
           <MonthlyChart data={monthlyData} />
         </div>
+
         <div className="rounded-lg bg-white p-6 shadow-sm">
           <h3 className="mb-4 text-lg font-medium text-gray-900">Analytics Summary</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Highest Expense:</span>
-                <span className="font-medium">
-                  Rs. {Math.max(...expenses.map(e => e.amount), 0).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Lowest Expense:</span>
-                <span className="font-medium">
-                  Rs. {Math.min(...expenses.map(e => e.amount), 0).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Average Expense:</span>
-                <span className="font-medium">
-                  Rs. {(expenses.reduce((sum, e) => sum + e.amount, 0) / expenses.length || 0).toFixed(2)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Expenses with Receipts:</span>
-                <span className="font-medium">{receiptsCount}</span>
-              </div>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Highest Expense:</span>
+              <span className="font-medium">Rs. {Math.max(...expenses.map(e => e.amount), 0).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Lowest Expense:</span>
+              <span className="font-medium">Rs. {Math.min(...expenses.map(e => e.amount), 0).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Average Expense:</span>
+              <span className="font-medium">Rs. {(expenses.reduce((sum, e) => sum + e.amount, 0) / expenses.length || 0).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Expenses with Receipts:</span>
+              <span className="font-medium">{receiptsCount}</span>
             </div>
           </div>
         </div>
       </div>
+
       <DeleteConfirmationModal
         isOpen={deleteModalOpen}
         onCancel={() => setDeleteModalOpen(false)}
