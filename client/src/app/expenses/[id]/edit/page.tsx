@@ -257,7 +257,7 @@ export default function EditExpensePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-white hover:from-emerald-600 hover:to-teal-700 disabled:opacity-50 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <Save className="h-4 w-4" />
                 <span>{saving ? 'Updating...' : 'Update Expense'}</span>
@@ -266,7 +266,7 @@ export default function EditExpensePage() {
               <button
                 type="button"
                 onClick={handleDelete}
-                className="flex items-center space-x-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-pink-500 to-rose-600 px-4 py-2 text-white hover:from-pink-600 hover:to-rose-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <Trash2 className="h-4 w-4" />
                 <span>Delete</span>
@@ -274,7 +274,7 @@ export default function EditExpensePage() {
 
               <Link
                 href={`/expenses/${expense.id}`}
-                className="flex items-center space-x-2 rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
+                className="flex items-center space-x-2 rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 Cancel
               </Link>

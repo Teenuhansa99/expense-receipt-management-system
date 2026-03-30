@@ -213,7 +213,7 @@ export default function AddExpensePage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-emerald-500 to-teal-600 px-4 py-2 text-white hover:from-emerald-600 hover:to-teal-700 disabled:opacity-50 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <Save className="h-4 w-4" />
                 <span>{loading ? 'Saving...' : 'Save Expense'}</span>
@@ -222,7 +222,7 @@ export default function AddExpensePage() {
               <button
                 type="button"
                 onClick={handleReset}
-                className="flex items-center space-x-2 rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 text-white hover:from-amber-600 hover:to-orange-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <RotateCcw className="h-4 w-4" />
                 <span>Reset</span>
@@ -230,7 +230,7 @@ export default function AddExpensePage() {
 
               <Link
                 href="/"
-                className="flex items-center space-x-2 rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400"
+                className="flex items-center space-x-2 rounded-md bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 Cancel
               </Link>

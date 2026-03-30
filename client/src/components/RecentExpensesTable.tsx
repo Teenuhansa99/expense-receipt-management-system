@@ -9,8 +9,21 @@ interface RecentExpensesTableProps {
 }
 
 export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableProps) {
+  const getCategoryBadge = (category: string) => {
+    const categoryStyles = {
+      'Food': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      'Transportation': 'bg-amber-100 text-amber-800 border-amber-200',
+      'Entertainment': 'bg-violet-100 text-violet-800 border-violet-200',
+      'Health': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+      'Education': 'bg-blue-100 text-blue-800 border-blue-200',
+      'Other': 'bg-gray-100 text-gray-800 border-gray-200',
+    };
+
+    return categoryStyles[category as keyof typeof categoryStyles] || categoryStyles.Other;
+  };
+
   return (
-    <div className="rounded-lg bg-white shadow-sm">
+    <div className="rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div className="border-b border-gray-200 px-6 py-4">
         <h3 className="text-lg font-medium text-gray-900">Recent Expenses</h3>
       </div>
@@ -40,12 +53,14 @@ export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableP
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {expenses.slice(0, 5).map((expense) => (
-              <tr key={expense.id} className="hover:bg-gray-50">
+              <tr key={expense.id} className="hover:bg-gray-50 transition-colors duration-200">
                 <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
                   {expense.title}
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                  {expense.category}
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getCategoryBadge(expense.category)}`}>
+                    {expense.category}
+                  </span>
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                   {formatDate(expense.expense_date)}
@@ -59,7 +74,7 @@ export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableP
                       href={expense.receipt_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-cyan-600 hover:text-cyan-800 font-medium transition-colors duration-200"
                     >
                       View
                     </a>
@@ -71,19 +86,19 @@ export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableP
                   <div className="flex space-x-2">
                     <Link
                       href={`/expenses/${expense.id}`}
-                      className="text-blue-600 hover:text-blue-800"
+                      className="text-cyan-600 hover:text-cyan-800 transition-colors duration-200 hover:scale-110 transform"
                     >
                       <Eye className="h-4 w-4" />
                     </Link>
                     <Link
                       href={`/expenses/${expense.id}/edit`}
-                      className="text-green-600 hover:text-green-800"
+                      className="text-violet-600 hover:text-violet-800 transition-colors duration-200 hover:scale-110 transform"
                     >
                       <Edit className="h-4 w-4" />
                     </Link>
                     <button
                       onClick={() => onDelete?.(expense.id)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-pink-600 hover:text-pink-800 transition-colors duration-200 hover:scale-110 transform"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -97,7 +112,7 @@ export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableP
       <div className="border-t border-gray-200 px-6 py-4">
         <Link
           href="/expenses"
-          className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+          className="text-cyan-600 hover:text-cyan-800 text-sm font-medium transition-colors duration-200"
         >
           View all expenses →
         </Link>

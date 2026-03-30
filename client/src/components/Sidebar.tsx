@@ -17,26 +17,31 @@ const sidebarItems = [
     title: 'Dashboard',
     href: '/',
     icon: LayoutDashboard,
+    iconColor: 'text-cyan-400',
   },
   {
     title: 'Expenses',
     href: '/expenses',
     icon: Receipt,
+    iconColor: 'text-violet-400',
   },
   {
     title: 'Add Expense',
     href: '/expenses/new',
     icon: Plus,
+    iconColor: 'text-emerald-400',
   },
   {
     title: 'Summary',
     href: '/summary',
     icon: BarChart3,
+    iconColor: 'text-amber-400',
   },
   {
     title: 'Settings',
     href: '/settings',
     icon: Settings,
+    iconColor: 'text-blue-400',
   },
 ];
 
@@ -58,13 +63,13 @@ export function Sidebar() {
               key={item.href}
               href={item.href}
               className={cn(
-                'flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                'flex items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 hover:shadow-lg',
                 isActive
-                  ? 'bg-gray-800 text-white'
+                  ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg'
                   : 'text-gray-300 hover:bg-gray-800 hover:text-white'
               )}
             >
-              <Icon className="h-5 w-5" />
+              <Icon className={cn('h-5 w-5', isActive ? 'text-white' : item.iconColor)} />
               <span>{item.title}</span>
             </Link>
           );

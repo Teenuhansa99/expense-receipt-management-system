@@ -9,20 +9,20 @@ interface SummaryCardProps {
 
 function SummaryCard({ title, value, icon, color = 'blue' }: SummaryCardProps) {
   const colorClasses = {
-    blue: 'bg-blue-50 text-blue-600',
-    green: 'bg-green-50 text-green-600',
-    purple: 'bg-purple-50 text-purple-600',
-    orange: 'bg-orange-50 text-orange-600',
+    blue: 'bg-gradient-to-br from-cyan-500 to-blue-600 text-white',
+    green: 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white',
+    purple: 'bg-gradient-to-br from-amber-500 to-orange-600 text-white',
+    orange: 'bg-gradient-to-br from-violet-500 to-purple-600 text-white',
   };
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-sm">
+    <div className={`rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 ${colorClasses[color as keyof typeof colorClasses]}`}>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className="text-sm font-medium opacity-90">{title}</p>
+          <p className="text-2xl font-bold">{value}</p>
         </div>
-        <div className={`rounded-full p-3 ${colorClasses[color as keyof typeof colorClasses]}`}>
+        <div className="rounded-full p-3 bg-white/20 backdrop-blur-sm">
           {icon}
         </div>
       </div>

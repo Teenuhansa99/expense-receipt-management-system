@@ -14,6 +14,19 @@ export default function ExpensesPage() {
   const [filters, setFilters] = useState<ExpenseFilters>({});
   const [showFilters, setShowFilters] = useState(false);
 
+  const getCategoryBadge = (category: string) => {
+    const categoryStyles = {
+      'Food': 'bg-emerald-100 text-emerald-800 border-emerald-200',
+      'Transportation': 'bg-amber-100 text-amber-800 border-amber-200',
+      'Entertainment': 'bg-violet-100 text-violet-800 border-violet-200',
+      'Health': 'bg-cyan-100 text-cyan-800 border-cyan-200',
+      'Education': 'bg-blue-100 text-blue-800 border-blue-200',
+      'Other': 'bg-gray-100 text-gray-800 border-gray-200',
+    };
+
+    return categoryStyles[category as keyof typeof categoryStyles] || categoryStyles.Other;
+  };
+
   useEffect(() => {
     fetchExpenses();
   }, [filters]);
@@ -72,7 +85,7 @@ export default function ExpensesPage() {
             <h3 className="text-lg font-medium text-gray-900">Filters</h3>
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+              className="flex items-center space-x-2 text-cyan-600 hover:text-cyan-800 transition-colors duration-200"
             >
               <Filter className="h-4 w-4" />
               <span>{showFilters ? 'Hide Filters' : 'Show Filters'}</span>
@@ -127,7 +140,7 @@ export default function ExpensesPage() {
               <div className="flex items-end">
                 <button
                   onClick={clearFilters}
-                  className="flex items-center space-x-2 rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600"
+                  className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-amber-500 to-orange-600 px-4 py-2 text-white hover:from-amber-600 hover:to-orange-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
                 >
                   <X className="h-4 w-4" />
                   <span>Clear</span>
@@ -138,7 +151,7 @@ export default function ExpensesPage() {
         </div>
 
         {/* Expenses Table */}
-        <div className="rounded-lg bg-white shadow-sm overflow-hidden">
+        <div className="rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50">
@@ -165,12 +178,14 @@ export default function ExpensesPage() {
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
                 {expenses.map((expense) => (
-                  <tr key={expense.id} className="hover:bg-gray-50">
+                  <tr key={expense.id} className="hover:bg-gray-50 transition-colors duration-200">
                     <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
                       {expense.title}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
-                      {expense.category}
+                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getCategoryBadge(expense.category)}`}>
+                        {expense.category}
+                      </span>
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
                       {formatDate(expense.expense_date)}
@@ -184,7 +199,7 @@ export default function ExpensesPage() {
                           href={expense.receipt_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-cyan-600 hover:text-cyan-800 font-medium transition-colors duration-200"
                         >
                           View
                         </a>
@@ -196,19 +211,19 @@ export default function ExpensesPage() {
                       <div className="flex space-x-2">
                         <Link
                           href={`/expenses/${expense.id}`}
-                          className="text-blue-600 hover:text-blue-800"
+                          className="text-cyan-600 hover:text-cyan-800 transition-colors duration-200 hover:scale-110 transform"
                         >
                           <Eye className="h-4 w-4" />
                         </Link>
                         <Link
                           href={`/expenses/${expense.id}/edit`}
-                          className="text-green-600 hover:text-green-800"
+                          className="text-violet-600 hover:text-violet-800 transition-colors duration-200 hover:scale-110 transform"
                         >
                           <Edit className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => handleDeleteExpense(expense.id)}
-                          className="text-red-600 hover:text-red-800"
+                          className="text-pink-600 hover:text-pink-800 transition-colors duration-200 hover:scale-110 transform"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>

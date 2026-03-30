@@ -86,20 +86,20 @@ export default function ExpenseDetailsPage() {
           </Link>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
+        <div className="rounded-lg bg-white p-6 shadow-lg hover:shadow-xl transition-shadow duration-300">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">{expense.title}</h2>
             <div className="flex space-x-2">
               <Link
                 href={`/expenses/${expense.id}/edit`}
-                className="flex items-center space-x-2 rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-violet-500 to-purple-600 px-4 py-2 text-white hover:from-violet-600 hover:to-purple-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <Edit className="h-4 w-4" />
                 <span>Edit</span>
               </Link>
               <button
                 onClick={handleDelete}
-                className="flex items-center space-x-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+                className="flex items-center space-x-2 rounded-md bg-gradient-to-r from-pink-500 to-rose-600 px-4 py-2 text-white hover:from-pink-600 hover:to-rose-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
               >
                 <Trash2 className="h-4 w-4" />
                 <span>Delete</span>
@@ -109,32 +109,32 @@ export default function ExpenseDetailsPage() {
 
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Amount</label>
-                <p className="text-lg font-semibold text-gray-900">
+              <div className="bg-gradient-to-br from-cyan-50 to-blue-50 p-4 rounded-lg border border-cyan-100">
+                <label className="block text-sm font-medium text-cyan-800">Amount</label>
+                <p className="text-lg font-semibold text-cyan-900">
                   {formatCurrency(expense.amount)}
                 </p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Category</label>
-                <p className="text-lg text-gray-900">{expense.category}</p>
+              <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-lg border border-emerald-100">
+                <label className="block text-sm font-medium text-emerald-800">Category</label>
+                <p className="text-lg text-emerald-900">{expense.category}</p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Date</label>
-                <p className="text-lg text-gray-900">{formatDate(expense.expense_date)}</p>
+              <div className="bg-gradient-to-br from-amber-50 to-orange-50 p-4 rounded-lg border border-amber-100">
+                <label className="block text-sm font-medium text-amber-800">Date</label>
+                <p className="text-lg text-amber-900">{formatDate(expense.expense_date)}</p>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Receipt</label>
-                <p className="text-lg text-gray-900">
+              <div className="bg-gradient-to-br from-violet-50 to-purple-50 p-4 rounded-lg border border-violet-100">
+                <label className="block text-sm font-medium text-violet-800">Receipt</label>
+                <p className="text-lg text-violet-900">
                   {expense.receipt_url ? (
                     <a
                       href={expense.receipt_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+                      className="flex items-center space-x-2 text-violet-600 hover:text-violet-800 transition-colors duration-200"
                     >
                       <span>View Receipt</span>
                       <ExternalLink className="h-4 w-4" />

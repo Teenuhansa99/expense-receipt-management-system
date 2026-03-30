@@ -31,7 +31,7 @@ export function Header({ title, showSearch = false, showAddButton = false, onSea
         {showAddButton && (
           <Link
             href="/expenses/new"
-            className="flex items-center space-x-2 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+            className="flex items-center space-x-2 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-2 text-white hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 hover:shadow-lg transform hover:scale-105"
           >
             <Plus className="h-4 w-4" />
             <span>Add Expense</span>
