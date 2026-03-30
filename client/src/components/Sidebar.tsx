@@ -76,8 +76,8 @@ export function Sidebar() {
         })}
       </nav>
       <div className="border-t border-gray-800 p-4">
-        <button className="flex w-full items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-800 hover:text-white">
-          <LogOut className="h-5 w-5" />
+        <button className="flex w-full items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-cyan-400 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white transition-all duration-300">
+          <LogOut className="h-5 w-5 text-cyan-400 hover:text-white" />
           <span>Logout</span>
         </button>
       </div>
