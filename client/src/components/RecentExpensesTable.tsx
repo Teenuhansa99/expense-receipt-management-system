@@ -11,11 +11,14 @@ interface RecentExpensesTableProps {
 export function RecentExpensesTable({ expenses, onDelete }: RecentExpensesTableProps) {
   const getCategoryBadge = (category: string) => {
     const categoryStyles = {
+      'Office': 'bg-cyan-100 text-cyan-800 border-cyan-200',
       'Food': 'bg-emerald-100 text-emerald-800 border-emerald-200',
-      'Transportation': 'bg-amber-100 text-amber-800 border-amber-200',
-      'Entertainment': 'bg-violet-100 text-violet-800 border-violet-200',
+      'Travel': 'bg-amber-100 text-amber-800 border-amber-200',
+      'Utilities': 'bg-violet-100 text-violet-800 border-violet-200',
+      'Software': 'bg-blue-100 text-blue-800 border-blue-200',
+      'Marketing': 'bg-pink-100 text-pink-800 border-pink-200',
       'Health': 'bg-cyan-100 text-cyan-800 border-cyan-200',
-      'Education': 'bg-blue-100 text-blue-800 border-blue-200',
+      'Education': 'bg-indigo-100 text-indigo-800 border-indigo-200',
       'Other': 'bg-gray-100 text-gray-800 border-gray-200',
     };
 

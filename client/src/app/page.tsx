@@ -6,6 +6,7 @@ import { SummaryCards } from '@/components/SummaryCards';
 import { RecentExpensesTable } from '@/components/RecentExpensesTable';
 import { QuickActions } from '@/components/QuickActions';
 import { CategoryChart } from '@/components/SpendingCharts';
+import { DeleteConfirmationModal } from '@/components/DeleteConfirmationModal';
 import { expenseApi } from '@/services/api';
 import { Expense, ExpenseSummary } from '@/types/expense';
 import { getCurrentMonthExpenses, getCategoryStats } from '@/utils/formatters';
@@ -14,6 +15,8 @@ export default function Dashboard() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary | null>(null);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedExpenseId, setSelectedExpenseId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,18 +37,25 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  const handleDeleteExpense = async (id: number) => {
-    if (confirm('Are you sure you want to delete this expense?')) {
-      try {
-        await expenseApi.deleteExpense(id);
-        setExpenses(expenses.filter(expense => expense.id !== id));
-        // Refresh summary
-        const summaryData = await expenseApi.getExpenseSummary();
-        setSummary(summaryData);
-      } catch (error) {
-        console.error('Error deleting expense:', error);
-        alert('Failed to delete expense');
-      }
+  const handleDeleteExpense = (id: number) => {
+    setSelectedExpenseId(id);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDeleteExpense = async () => {
+    if (selectedExpenseId === null) return;
+
+    try {
+      await expenseApi.deleteExpense(selectedExpenseId);
+      setExpenses(expenses.filter(expense => expense.id !== selectedExpenseId));
+      const summaryData = await expenseApi.getExpenseSummary();
+      setSummary(summaryData);
+    } catch (error) {
+      console.error('Error deleting expense:', error);
+      alert('Failed to delete expense');
+    } finally {
+      setDeleteModalOpen(false);
+      setSelectedExpenseId(null);
     }
   };
 
@@ -115,6 +125,13 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      <DeleteConfirmationModal
+        isOpen={deleteModalOpen}
+        onCancel={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDeleteExpense}
+        title="Delete this expense?"
+        message="This action cannot be undone. All data for this expense will be removed permanently."
+      />
     </Layout>
   );
 }

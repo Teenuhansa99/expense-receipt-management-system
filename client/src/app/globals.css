@@ -20,7 +20,15 @@
 }
 
 body {
-  background: var(--background);
+  background: radial-gradient(circle at 20% 20%, rgba(34,193,195,0.12), rgba(40,56,101,0.08) 70%, #f8fafc 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  transition: background-color 0.20s ease, color 0.20s ease, border-color 0.20s ease;
+}
+
+button, input, select, textarea {
+  transition: box-shadow 0.20s ease, border-color 0.20s ease;
 }
