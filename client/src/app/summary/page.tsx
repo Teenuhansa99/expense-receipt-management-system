@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { SummaryCards } from '@/components/SummaryCards';
-import { CategoryChart } from '@/components/SpendingCharts';
+import { CategoryChart, MonthlyChart } from '@/components/SpendingCharts';
 import { expenseApi } from '@/services/api';
 import { Expense, ExpenseSummary } from '@/types/expense';
-import { formatCurrency, getCurrentMonthExpenses, getCategoryStats } from '@/utils/formatters';
+import { formatCurrency, getCurrentMonthExpenses, getCategoryStats, getMonthlyStats } from '@/utils/formatters';
 
-export default function SummaryPage() {
+function SummaryContent() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,6 +45,7 @@ export default function SummaryPage() {
 
   const currentMonthExpenses = getCurrentMonthExpenses(expenses);
   const categoryStats = getCategoryStats(expenses);
+  const monthlyStats = getMonthlyStats(expenses);
   const thisMonthAmount = currentMonthExpenses.reduce((sum, expense) => sum + expense.amount, 0);
   const receiptsCount = expenses.filter(expense => expense.receipt_url).length;
 
@@ -114,33 +116,46 @@ export default function SummaryPage() {
         </div>
 
         {/* Analytics Section */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <CategoryChart data={categoryStats} />
+        <div className="space-y-8">
+          {/* Charts Grid - Full Width */}
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="min-h-[500px]">
+              <CategoryChart data={categoryStats} />
+            </div>
+            <div className="min-h-[500px]">
+              <MonthlyChart data={monthlyStats} />
+            </div>
+          </div>
 
-          <div className="rounded-lg bg-white p-6 shadow-sm">
-            <h3 className="mb-4 text-lg font-medium text-gray-900">Expense Insights</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Highest Expense:</span>
-                <span className="font-medium">{formatCurrency(highestExpense)}</span>
+          {/* Insights Card */}
+          <div className="rounded-2xl bg-gradient-to-br from-white to-gray-50 p-8 shadow-xl border border-gray-100">
+            <h3 className="mb-6 text-2xl font-bold text-gray-900">Expense Insights</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 border border-blue-200">
+                <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Highest Expense</p>
+                <p className="text-3xl font-bold text-blue-900 mt-2">{formatCurrency(highestExpense)}</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Lowest Expense:</span>
-                <span className="font-medium">{formatCurrency(lowestExpense)}</span>
+              <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 border border-emerald-200">
+                <p className="text-sm font-semibold text-emerald-600 uppercase tracking-wide">Lowest Expense</p>
+                <p className="text-3xl font-bold text-emerald-900 mt-2">{formatCurrency(lowestExpense)}</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Expenses with Receipts:</span>
-                <span className="font-medium">{receiptsCount}</span>
+              <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 p-6 border border-purple-200">
+                <p className="text-sm font-semibold text-purple-600 uppercase tracking-wide">Average Expense</p>
+                <p className="text-3xl font-bold text-purple-900 mt-2">{formatCurrency(expenses.length > 0 ? expenses.reduce((sum, e) => sum + e.amount, 0) / expenses.length : 0)}</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Expenses without Receipts:</span>
-                <span className="font-medium">{(summary?.totalCount || 0) - receiptsCount}</span>
+              <div className="rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 p-6 border border-orange-200">
+                <p className="text-sm font-semibold text-orange-600 uppercase tracking-wide">Receipts</p>
+                <p className="text-3xl font-bold text-orange-900 mt-2">{receiptsCount}</p>
               </div>
-              <div className="flex justify-between">
-                <span className="text-gray-600">Most Used Category:</span>
-                <span className="font-medium">
+              <div className="rounded-xl bg-gradient-to-br from-pink-50 to-pink-100 p-6 border border-pink-200">
+                <p className="text-sm font-semibold text-pink-600 uppercase tracking-wide">No Receipts</p>
+                <p className="text-3xl font-bold text-pink-900 mt-2">{(summary?.totalCount || 0) - receiptsCount}</p>
+              </div>
+              <div className="rounded-xl bg-gradient-to-br from-cyan-50 to-cyan-100 p-6 border border-cyan-200">
+                <p className="text-sm font-semibold text-cyan-600 uppercase tracking-wide">Top Category</p>
+                <p className="text-3xl font-bold text-cyan-900 mt-2">
                   {categoryStats.length > 0 ? categoryStats[0].category : 'N/A'}
-                </span>
+                </p>
               </div>
             </div>
           </div>
@@ -199,5 +214,13 @@ export default function SummaryPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function SummaryPage() {
+  return (
+    <ProtectedRoute>
+      <SummaryContent />
+    </ProtectedRoute>
   );
 }

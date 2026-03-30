@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Layout } from '@/components/Layout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { SummaryCards } from '@/components/SummaryCards';
 import { RecentExpensesTable } from '@/components/RecentExpensesTable';
 import { QuickActions } from '@/components/QuickActions';
@@ -10,9 +11,9 @@ import { CreditCard, DollarSign, Calendar, Layers } from 'lucide-react';
 import { DeleteConfirmationModal } from '@/components/DeleteConfirmationModal';
 import { expenseApi } from '@/services/api';
 import { Expense, ExpenseSummary } from '@/types/expense';
-import { getCurrentMonthExpenses, getCategoryStats } from '@/utils/formatters';
+import { getCurrentMonthExpenses, getCategoryStats, getMonthlyStats } from '@/utils/formatters';
 
-export default function Dashboard() {
+function DashboardContent() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [summary, setSummary] = useState<ExpenseSummary | null>(null);
   const [loading, setLoading] = useState(true);
@@ -72,17 +73,9 @@ export default function Dashboard() {
 
   const currentMonthExpenses = getCurrentMonthExpenses(expenses);
   const categoryStats = getCategoryStats(expenses);
+  const monthlyData = getMonthlyStats(expenses);
   const thisMonthAmount = currentMonthExpenses.reduce((sum, expense) => sum + expense.amount, 0);
   const receiptsCount = expenses.filter(expense => expense.receipt_url).length;
-
-  const monthlyData = Object.values(
-    expenses.reduce((acc, expense) => {
-      const month = new Date(expense.expense_date).toLocaleString('default', { month: 'short' });
-      if (!acc[month]) acc[month] = { month, total: 0 };
-      acc[month].total += expense.amount;
-      return acc;
-    }, {} as Record<string, { month: string; total: number }>)
-  );
 
   return (
     <Layout title="Dashboard" showAddButton>
@@ -110,29 +103,33 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <CategoryChart data={categoryStats} />
-          <MonthlyChart data={monthlyData} />
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+          <div className="min-h-[500px]">
+            <CategoryChart data={categoryStats} />
+          </div>
+          <div className="min-h-[500px]">
+            <MonthlyChart data={monthlyData} />
+          </div>
         </div>
 
-        <div className="rounded-lg bg-white p-6 shadow-sm">
-          <h3 className="mb-4 text-lg font-medium text-gray-900">Analytics Summary</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Highest Expense:</span>
-              <span className="font-medium">Rs. {Math.max(...expenses.map(e => e.amount), 0).toFixed(2)}</span>
+        <div className="rounded-2xl bg-gradient-to-br from-white to-gray-50 p-8 shadow-xl border border-gray-100">
+          <h3 className="mb-6 text-2xl font-bold text-gray-900">Analytics Summary</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100 p-6 border border-blue-200">
+              <p className="text-sm font-semibold text-blue-600 uppercase tracking-wide">Highest</p>
+              <p className="text-2xl font-bold text-blue-900 mt-2">Rs. {Math.max(...expenses.map(e => e.amount), 0).toFixed(0)}</p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Lowest Expense:</span>
-              <span className="font-medium">Rs. {Math.min(...expenses.map(e => e.amount), 0).toFixed(2)}</span>
+            <div className="rounded-xl bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 border border-emerald-200">
+              <p className="text-sm font-semibold text-emerald-600 uppercase tracking-wide">Lowest</p>
+              <p className="text-2xl font-bold text-emerald-900 mt-2">Rs. {Math.min(...expenses.map(e => e.amount), 0).toFixed(0)}</p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Average Expense:</span>
-              <span className="font-medium">Rs. {(expenses.reduce((sum, e) => sum + e.amount, 0) / expenses.length || 0).toFixed(2)}</span>
+            <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100 p-6 border border-purple-200">
+              <p className="text-sm font-semibold text-purple-600 uppercase tracking-wide">Average</p>
+              <p className="text-2xl font-bold text-purple-900 mt-2">Rs. {(expenses.reduce((sum, e) => sum + e.amount, 0) / expenses.length || 0).toFixed(0)}</p>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Expenses with Receipts:</span>
-              <span className="font-medium">{receiptsCount}</span>
+            <div className="rounded-xl bg-gradient-to-br from-orange-50 to-orange-100 p-6 border border-orange-200">
+              <p className="text-sm font-semibold text-orange-600 uppercase tracking-wide">Receipts</p>
+              <p className="text-2xl font-bold text-orange-900 mt-2">{receiptsCount}</p>
             </div>
           </div>
         </div>
@@ -146,5 +143,13 @@ export default function Dashboard() {
         message="This action cannot be undone. All data for this expense will be removed permanently."
       />
     </Layout>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 }

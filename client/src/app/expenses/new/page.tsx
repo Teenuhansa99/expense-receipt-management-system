@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Layout } from '@/components/Layout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { expenseApi } from '@/services/api';
 import { CreateExpenseInput } from '@/types/expense';
 import { ArrowLeft, Save, RotateCcw } from 'lucide-react';
 
-export default function AddExpensePage() {
+function AddExpenseContent() {
   const router = useRouter();
   const [formData, setFormData] = useState<CreateExpenseInput>({
     title: '',
@@ -239,5 +240,13 @@ export default function AddExpensePage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function AddExpensePage() {
+  return (
+    <ProtectedRoute>
+      <AddExpenseContent />
+    </ProtectedRoute>
   );
 }

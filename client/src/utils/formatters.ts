@@ -47,3 +47,22 @@ export const getCategoryStats = (expenses: any[]) => {
     total,
   }));
 };
+
+export const getMonthlyStats = (expenses: any[]) => {
+  const monthMap = new Map<string, number>();
+  const monthOrder = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  expenses.forEach(expense => {
+    const date = new Date(expense.expense_date);
+    const month = monthOrder[date.getMonth()];
+    const current = monthMap.get(month) || 0;
+    monthMap.set(month, current + expense.amount);
+  });
+
+  return monthOrder
+    .filter(month => monthMap.has(month))
+    .map(month => ({
+      month,
+      total: monthMap.get(month) || 0,
+    }));
+};

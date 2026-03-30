@@ -11,6 +11,7 @@ import {
   LogOut
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const sidebarItems = [
   {
@@ -47,6 +48,11 @@ const sidebarItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <div className="flex h-full w-64 flex-col bg-gray-900 text-white">
@@ -76,7 +82,10 @@ export function Sidebar() {
         })}
       </nav>
       <div className="border-t border-gray-800 p-4">
-        <button className="flex w-full items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-cyan-400 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white transition-all duration-300">
+        <button 
+          onClick={handleLogout}
+          className="flex w-full items-center space-x-3 rounded-lg px-3 py-2 text-sm font-medium text-cyan-400 hover:bg-gradient-to-r hover:from-cyan-500 hover:to-blue-600 hover:text-white transition-all duration-300"
+        >
           <LogOut className="h-5 w-5 text-cyan-400 hover:text-white" />
           <span>Logout</span>
         </button>

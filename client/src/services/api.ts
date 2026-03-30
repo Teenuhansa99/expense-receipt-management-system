@@ -17,6 +17,43 @@ const api = axios.create({
   },
 });
 
+// Add request interceptor to include auth token
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Add response interceptor to handle 401 errors
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      if (typeof window !== 'undefined') {
+        // Clear auth data
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+        
+        // Redirect to login
+        const currentPath = window.location.pathname;
+        if (currentPath !== '/login' && currentPath !== '/register') {
+          window.location.href = '/login?expired=true';
+        }
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Helper function to parse expense data from API
 const parseExpense = (expense: any): Expense => ({
   ...expense,

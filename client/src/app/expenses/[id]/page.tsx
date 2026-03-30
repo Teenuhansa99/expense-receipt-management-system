@@ -4,12 +4,13 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Layout } from '@/components/Layout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { expenseApi } from '@/services/api';
 import { Expense } from '@/types/expense';
 import { formatCurrency, formatDate, formatDateTime } from '@/utils/formatters';
 import { ArrowLeft, Edit, Trash2, ExternalLink } from 'lucide-react';
 
-export default function ExpenseDetailsPage() {
+function ExpenseDetailsContent() {
   const params = useParams();
   const router = useRouter();
   const [expense, setExpense] = useState<Expense | null>(null);
@@ -163,5 +164,13 @@ export default function ExpenseDetailsPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function ExpenseDetailsPage() {
+  return (
+    <ProtectedRoute>
+      <ExpenseDetailsContent />
+    </ProtectedRoute>
   );
 }

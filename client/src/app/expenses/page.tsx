@@ -3,12 +3,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Layout } from '@/components/Layout';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { expenseApi } from '@/services/api';
 import { Expense, ExpenseFilters } from '@/types/expense';
 import { formatCurrency, formatDate } from '@/utils/formatters';
 import { Eye, Edit, Trash2, Search, Filter, X } from 'lucide-react';
 
-export default function ExpensesPage() {
+function ExpensesContent() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<ExpenseFilters>({});
@@ -243,5 +244,13 @@ export default function ExpensesPage() {
         </div>
       </div>
     </Layout>
+  );
+}
+
+export default function ExpensesPage() {
+  return (
+    <ProtectedRoute>
+      <ExpensesContent />
+    </ProtectedRoute>
   );
 }

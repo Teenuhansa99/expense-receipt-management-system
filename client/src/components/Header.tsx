@@ -1,7 +1,8 @@
 'use client';
 
-import { Search, Plus, User } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import Link from 'next/link';
+import { ProfileDropdown } from './ProfileDropdown';
 
 interface HeaderProps {
   title: string;
@@ -15,7 +16,7 @@ export function Header({ title, showSearch = false, showAddButton = false, onSea
     <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
       <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
 
-      <div className="flex items-center space-x-4">
+      <div className="flex items-center space-x-6">
         {showSearch && (
           <div className="relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -38,9 +39,7 @@ export function Header({ title, showSearch = false, showAddButton = false, onSea
           </Link>
         )}
 
-        <button className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200">
-          <User className="h-4 w-4 text-gray-600" />
-        </button>
+        <ProfileDropdown />
       </div>
     </header>
   );
