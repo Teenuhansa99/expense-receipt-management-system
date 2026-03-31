@@ -53,7 +53,7 @@ Navigate to `http://localhost:3000`
 
 ---
 
-## 📋 Features
+## Features
 
 ### Core Features
 - User Registration & Login with JWT authentication
