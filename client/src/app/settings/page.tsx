@@ -237,11 +237,7 @@ function SettingsContent() {
           </button>
         </div>
 
-        {/* Footer Info */}
-        <div className="rounded-lg bg-blue-50 p-4 text-sm text-blue-800 border border-blue-200">
-          <p className="font-medium">💡 Tip:</p>
-          <p className="mt-1">Your settings are saved locally in your browser. They will be preserved even after you close the app.</p>
-        </div>
+        {/* Footer */}
       </div>
     </Layout>
   );
