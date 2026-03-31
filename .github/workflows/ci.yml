@@ -30,5 +30,8 @@ jobs:
       - name: Build project
         run: npm run build || echo "No build step"
 
+      - name: Run lint
+        run: npm run lint || echo "No lint config"
+
       - name: Run tests
         run: npm test || echo "No tests yet"
