@@ -1,10 +1,19 @@
 import { Request, Response, NextFunction } from "express";
 import { expenseService } from "../services/expense.service";
+import { JwtPayload } from "../models/user.types";
+
+interface AuthenticatedRequest extends Request {
+  user?: JwtPayload;
+}
 
 export const expenseController = {
-  async createExpense(req: Request, res: Response, next: NextFunction) {
+  async createExpense(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const newExpense = await expenseService.createExpense(req.body);
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
+      const newExpense = await expenseService.createExpense(req.body, userId);
 
       res.status(201).json({
         success: true,
@@ -16,11 +25,15 @@ export const expenseController = {
     }
   },
 
-  async getAllExpenses(req: Request, res: Response, next: NextFunction) {
+  async getAllExpenses(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
       const { search, category, startDate, endDate } = req.query;
 
-      const expenses = await expenseService.getAllExpenses({
+      const expenses = await expenseService.getAllExpenses(userId, {
         search: search as string,
         category: category as string,
         startDate: startDate as string,
@@ -36,10 +49,14 @@ export const expenseController = {
     }
   },
 
-  async getExpenseById(req: Request, res: Response, next: NextFunction) {
+  async getExpenseById(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
       const id = Number(req.params.id);
-      const expense = await expenseService.getExpenseById(id);
+      const expense = await expenseService.getExpenseById(id, userId);
 
       res.status(200).json({
         success: true,
@@ -50,10 +67,14 @@ export const expenseController = {
     }
   },
 
-  async updateExpense(req: Request, res: Response, next: NextFunction) {
+  async updateExpense(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
       const id = Number(req.params.id);
-      const updatedExpense = await expenseService.updateExpense(id, req.body);
+      const updatedExpense = await expenseService.updateExpense(id, userId, req.body);
 
       res.status(200).json({
         success: true,
@@ -65,10 +86,14 @@ export const expenseController = {
     }
   },
 
-  async deleteExpense(req: Request, res: Response, next: NextFunction) {
+  async deleteExpense(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
       const id = Number(req.params.id);
-      const deletedExpense = await expenseService.deleteExpense(id);
+      const deletedExpense = await expenseService.deleteExpense(id, userId);
 
       res.status(200).json({
         success: true,
@@ -80,9 +105,13 @@ export const expenseController = {
     }
   },
 
-  async getExpenseSummary(req: Request, res: Response, next: NextFunction) {
+  async getExpenseSummary(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
-      const summary = await expenseService.getExpenseSummary();
+      const userId = req.user?.userId;
+      if (!userId) {
+        return res.status(401).json({ success: false, message: "Unauthorized" });
+      }
+      const summary = await expenseService.getExpenseSummary(userId);
 
       res.status(200).json({
         success: true,

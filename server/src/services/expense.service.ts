@@ -3,21 +3,24 @@ import { CreateExpenseInput, UpdateExpenseInput } from "../models/expense.types"
 import { ApiError } from "../utils/apiError";
 
 export const expenseService = {
-  async createExpense(data: CreateExpenseInput) {
-    return await expenseRepository.create(data);
+  async createExpense(data: CreateExpenseInput, userId: number) {
+    return await expenseRepository.create(data, userId);
   },
 
-  async getAllExpenses(filters: {
-    search?: string;
-    category?: string;
-    startDate?: string;
-    endDate?: string;
-  }) {
-    return await expenseRepository.findAll(filters);
+  async getAllExpenses(
+    userId: number,
+    filters: {
+      search?: string;
+      category?: string;
+      startDate?: string;
+      endDate?: string;
+    }
+  ) {
+    return await expenseRepository.findAll(userId, filters);
   },
 
-  async getExpenseById(id: number) {
-    const expense = await expenseRepository.findById(id);
+  async getExpenseById(id: number, userId: number) {
+    const expense = await expenseRepository.findById(id, userId);
 
     if (!expense) {
       throw new ApiError(404, "Expense not found");
@@ -26,8 +29,8 @@ export const expenseService = {
     return expense;
   },
 
-  async updateExpense(id: number, data: UpdateExpenseInput) {
-    const updatedExpense = await expenseRepository.update(id, data);
+  async updateExpense(id: number, userId: number, data: UpdateExpenseInput) {
+    const updatedExpense = await expenseRepository.update(id, userId, data);
 
     if (!updatedExpense) {
       throw new ApiError(404, "Expense not found");
@@ -36,8 +39,8 @@ export const expenseService = {
     return updatedExpense;
   },
 
-  async deleteExpense(id: number) {
-    const deletedExpense = await expenseRepository.delete(id);
+  async deleteExpense(id: number, userId: number) {
+    const deletedExpense = await expenseRepository.delete(id, userId);
 
     if (!deletedExpense) {
       throw new ApiError(404, "Expense not found");
@@ -46,7 +49,7 @@ export const expenseService = {
     return deletedExpense;
   },
 
-  async getExpenseSummary() {
-    return await expenseRepository.getSummary();
+  async getExpenseSummary(userId: number) {
+    return await expenseRepository.getSummary(userId);
   },
 };

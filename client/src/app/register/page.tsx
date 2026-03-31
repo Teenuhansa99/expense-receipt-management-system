@@ -196,11 +196,6 @@ export default function RegisterPage() {
             Sign in instead
           </Link>
         </div>
-
-        {/* Footer Info */}
-        <p className="text-center text-gray-600 text-sm mt-6">
-          Your password is securely hashed with bcrypt
-        </p>
       </div>
     </div>
   );
