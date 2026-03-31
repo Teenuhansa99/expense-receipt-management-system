@@ -2,7 +2,7 @@
 
 A full-stack expense and receipt management web application built with Next.js, Express.js, PostgreSQL, and TypeScript.
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Node.js (v18 or higher)
@@ -56,14 +56,14 @@ Navigate to `http://localhost:3000`
 ## 📋 Features
 
 ### Core Features
-- ✅ User Registration & Login with JWT authentication
-- ✅ Add expenses with title, amount, category, and date
-- ✅ View list of expenses with pagination
-- ✅ Filter and search expenses by multiple criteria
-- ✅ View total spending summary with analytics
-- ✅ Edit and delete expenses
-- ✅ Category-based spending analysis
-- ✅ Responsive web interface
+- User Registration & Login with JWT authentication
+- Add expenses with title, amount, category, and date
+- View list of expenses with pagination
+- Filter and search expenses by multiple criteria
+- View total spending summary with analytics
+- Edit and delete expenses
+- Category-based spending analysis
+- Responsive web interface
 
 ### Pages
 1. **Login** (`/login`) - User authentication
@@ -78,7 +78,7 @@ Navigate to `http://localhost:3000`
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
 - **Framework**: Next.js 14 (App Router)
@@ -97,7 +97,7 @@ Navigate to `http://localhost:3000`
 
 ---
 
-## 📊 Database Schema
+## Database Schema
 
 ```sql
 -- Users table
@@ -130,7 +130,7 @@ CREATE INDEX idx_expenses_user_id ON public.expenses(user_id);
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Authentication
 | Method | Endpoint | Description |
@@ -183,7 +183,7 @@ Authorization: Bearer <jwt_token>
 
 ---
 
-## 🔒 Security
+## Security
 
 - JWT-based authentication
 - Password hashing with bcrypt
@@ -193,7 +193,7 @@ Authorization: Bearer <jwt_token>
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 expense_app/
@@ -223,20 +223,9 @@ expense_app/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run backend tests
 cd server
 npm test
-```
-
----
-
-## 📝 License
-
-MIT License
-
----
-
-**Built with ❤️ using Next.js, Express.js, PostgreSQL, and TypeScript**
