@@ -140,9 +140,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer Info */}
-        <p className="text-center text-gray-600 text-sm mt-6">
-          Protected by JWT authentication
-        </p>
+      
       </div>
     </div>
   );
